@@ -4,7 +4,7 @@ import { View, Text } from "react-native";
 import RegisterComponent from "../../components/SignupComponent/SignupComponent";
 import envs from '../../config/env';
 import { LOGIN } from "../../constants/routeNames";
-import register, { clearAuthState } from "../../context/actions/auth/register";
+import { clearAuthState, userRegister } from "../../context/actions/auth/register";
 import { GlobalContext } from "../../context/Provider";
 import axiosInstance from "../../helpers/axiosInterceptor";
 import { useFocusEffect } from "@react-navigation/core";
@@ -15,7 +15,7 @@ const Register = () => {
     const [form, setForm] = useState({});
     const [errors, setErrors] = useState({});
     const { authDispatch, authState: { error, loading, data } } = useContext(GlobalContext);
-
+    console.log(envs);
 
     useEffect(() => {
         if (data) {
@@ -97,7 +97,11 @@ const Register = () => {
             Object.values(form).every((item) => item.trim().length > 0) &&
             Object.values(errors).every((item) => !item)) {
 
-            register(form)(authDispatch);
+            // register(form)(authDispatch);
+            console.log('1111');
+            userRegister(form)(authDispatch)((response) => {
+                navigate(LOGIN, { data: response });
+            });
 
         }
 
